@@ -21,8 +21,10 @@
  **/
 
 #include <stdio.h>
+#include "ktiming.h"
+#include "sum.h"
 
-#define ARRAY_SIZE 10
+#define ARRAY_SIZE 10000
 
 void gen_array(int* array, int size) {
   int i;
@@ -47,8 +49,19 @@ void print_array(int* array, int size) {
 int main(void) {
   int array[ARRAY_SIZE];
 
-  gen_array(array, ARRAY_SIZE);
-  print_array(array, ARRAY_SIZE);
+  clockmark_t time1 = ktiming_getmark();
+
+  int i;
+  for (i = 0; i < 10000; i++) {
+    gen_array(array, ARRAY_SIZE);
+    print_array(array, ARRAY_SIZE);
+    sum_array(array, ARRAY_SIZE, 0, ARRAY_SIZE);
+  }
+
+  clockmark_t time2 = ktiming_getmark();
+
+  float elapsedf = ktiming_diff_sec(&time1, &time2);
+  printf("Elapsed execution time: %f sec\n", elapsedf);
 
   return 0;
 }

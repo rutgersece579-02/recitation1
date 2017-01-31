@@ -1,11 +1,11 @@
 /**
- * Copyright (c) 2012 MIT License by 6.172 Staff
+ * Copyright (c) 2011 by 6.172 Staff <6.172-staff@mit.edu>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to
- * deal in the Software without restriction, including without limitation the
- * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
- * sell copies of the Software, and to permit persons to whom the Software is
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in
@@ -15,9 +15,9 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
- * IN THE SOFTWARE.
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  **/
 
 
@@ -30,27 +30,26 @@
  * fresh copy when we test your code.
  **/
 
-#include "./ktiming.h"
+#include "ktiming.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef __APPLE__
-#include <time.h>
-#else
+#ifdef __APPLE__
 #include "CoreServices/CoreServices.h"
 #include "mach/mach.h"
 #include "mach/mach_time.h"
+#else
+#include <time.h>
 #endif
 
-
-
-// #define KTIMING_CLOCK_ID CLOCK_MONOTONIC
+//#define KTIMING_CLOCK_ID CLOCK_MONOTONIC
 #define KTIMING_CLOCK_ID CLOCK_PROCESS_CPUTIME_ID
-// #define KTIMING_CLOCK_ID CLOCK_THREAD_CPUTIME_ID
-// #define KTIMING_CLOCK_ID CLOCK_REALTIME
+//#define KTIMING_CLOCK_ID CLOCK_THREAD_CPUTIME_ID
+//#define KTIMING_CLOCK_ID CLOCK_REALTIME
 
-clockmark_t ktiming_getmark(void) {
+clockmark_t ktiming_getmark(void)
+{
 #ifdef __APPLE__
   uint64_t abs_time = mach_absolute_time();
   Nanoseconds nanos = AbsoluteToNanoseconds(*(AbsoluteTime*)&abs_time);
@@ -76,11 +75,13 @@ clockmark_t ktiming_getmark(void) {
 }
 
 uint64_t
-ktiming_diff_usec(const clockmark_t* const start, const clockmark_t* const end) {
+ktiming_diff_usec(const clockmark_t* const start, const clockmark_t* const end)
+{
   return *end - *start;
 }
 
 float
-ktiming_diff_sec(const clockmark_t* const start, const clockmark_t* const end) {
+ktiming_diff_sec(const clockmark_t* const start, const clockmark_t* const end)
+{
   return (float)ktiming_diff_usec(start, end) / 1000000000.0f;
 }
